@@ -1,0 +1,62 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Secrets / local credentials (NEVER commit) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+kaggle.json
+.kaggle/
+secrets/
+*.token
+
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
+
+# --- Large local artifacts ---
+*.zip
+*.gguf
+*.bin
+*.pt
+*.onnx
+
+# Competition package may ship a small tool wheel — keep it
+!data/kaggle_evaluation/deps/*.whl
+
+# --- Runtime / local outputs ---
+*.log
+.playwright-mcp/
+.review_*/
+notebooks/submit_kernel/output/
+strix_runs/
+.lmstudio/
+models/
+
+# Scratch dumps (structured notes under results/submissions/ stay tracked)
+results/**/*.jsonl
+results/leaderboard/
+results/mining_*
+results/lb_*.json
+results/subs_*.json
+results/submissions_*.json

@@ -1,0 +1,22 @@
+{
+  "id": "danielsolo1770/agent-security-phase0",
+  "title": "agent-security-phase0",
+  "code_file": "agent-security-phase0.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "agent-security",
+    "red-team"
+  ],
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": [
+    "ai-agent-security-multi-step-tool-attacks"
+  ],
+  "model_sources": [],
+  "machine_shape": "NvidiaTeslaT4"
+}
