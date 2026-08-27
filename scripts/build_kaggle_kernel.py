@@ -117,7 +117,11 @@ JEDAttackInferenceServer().serve()
     # KAGGLE_ENABLE_GPU=1 and optional KAGGLE_GPU_SHAPE=NvidiaTeslaT4
     import os
 
-    use_gpu = os.environ.get("KAGGLE_ENABLE_GPU", "").strip() in ("1", "true", "True", "yes")
+    # Default ON: this competition loads 20B/26B GGUF models. Opt out with
+    # KAGGLE_ENABLE_GPU=0. Previous default-off rebuilt CPU kernels if env
+    # was forgotten and silently slowed scored replay.
+    gpu_flag = os.environ.get("KAGGLE_ENABLE_GPU", "1").strip().lower()
+    use_gpu = gpu_flag not in ("0", "false", "no", "off")
     gpu_shape = os.environ.get("KAGGLE_GPU_SHAPE", "NvidiaTeslaT4").strip() or "NvidiaTeslaT4"
     meta = {
         "id": KERNEL_ID,
@@ -142,6 +146,7 @@ JEDAttackInferenceServer().serve()
     print(f"Wrote {nb_path} ({nb_path.stat().st_size} bytes)")
     print(f"Kernel id: {KERNEL_ID}")
     print(f"Embedded attack.py: {len(attack_text)} bytes")
+    print(f"enable_gpu={use_gpu} machine_shape={meta.get('machine_shape')}")
 
 
 if __name__ == "__main__":

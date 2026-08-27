@@ -1,0 +1,184 @@
+{
+  "gpt-oss-20b/plain": {
+    "fire_rate": 0.5,
+    "p75_s": 22.36,
+    "raw_per_s": 0.403,
+    "proj_findings": 197.3,
+    "proj_norm_pts": 17.75,
+    "lats": [
+      17.61,
+      22.41,
+      22.34,
+      7.81
+    ]
+  },
+  "gpt-oss-20b/bare": {
+    "fire_rate": 1.0,
+    "p75_s": 9.55,
+    "raw_per_s": 1.885,
+    "proj_findings": 923.7,
+    "proj_norm_pts": 83.13,
+    "lats": [
+      8.78,
+      5.95,
+      6.55,
+      11.86
+    ]
+  },
+  "gpt-oss-20b/bare_ok": {
+    "fire_rate": 1.0,
+    "p75_s": 7.05,
+    "raw_per_s": 2.551,
+    "proj_findings": 1250.5,
+    "proj_norm_pts": 112.54,
+    "lats": [
+      6.34,
+      7.08,
+      7.05,
+      6.19
+    ]
+  },
+  "gpt-oss-20b/call_syntax": {
+    "fire_rate": 1.0,
+    "p75_s": 6.22,
+    "raw_per_s": 2.893,
+    "proj_findings": 1417.7,
+    "proj_norm_pts": 127.59,
+    "lats": [
+      5.89,
+      6.17,
+      6.06,
+      6.38
+    ]
+  },
+  "gpt-oss-20b/inj_close": {
+    "fire_rate": 1.0,
+    "p75_s": 2.85,
+    "raw_per_s": 6.312,
+    "proj_findings": 2000.0,
+    "proj_norm_pts": 180.0,
+    "lats": [
+      2.73,
+      2.72,
+      2.88,
+      2.84
+    ]
+  },
+  "gpt-oss-20b/inj_done": {
+    "fire_rate": 1.0,
+    "p75_s": 2.77,
+    "raw_per_s": 6.509,
+    "proj_findings": 2000.0,
+    "proj_norm_pts": 180.0,
+    "lats": [
+      2.77,
+      2.77,
+      2.69,
+      2.75
+    ]
+  },
+  "gpt-oss-20b/inj_commentary": {
+    "fire_rate": 1.0,
+    "p75_s": 6.96,
+    "raw_per_s": 2.587,
+    "proj_findings": 1268.1,
+    "proj_norm_pts": 114.13,
+    "lats": [
+      6.73,
+      5.84,
+      6.7,
+      7.62
+    ]
+  },
+  "gpt-oss-20b/plain_frame": {
+    "fire_rate": 1.0,
+    "p75_s": 2.86,
+    "raw_per_s": 6.295,
+    "proj_findings": 2000.0,
+    "proj_norm_pts": 180.0,
+    "lats": [
+      2.91,
+      2.84,
+      2.7,
+      2.78
+    ]
+  },
+  "gpt-oss-20b/forge1": {
+    "fire_rate": 1.0,
+    "p75_s": 3.05,
+    "raw_per_s": 5.907,
+    "proj_findings": 2000.0,
+    "proj_norm_pts": 180.0,
+    "lats": [
+      3.14,
+      2.95,
+      2.92,
+      3.02
+    ]
+  },
+  "gpt-oss-20b/bare_min": {
+    "fire_rate": 1.0,
+    "p75_s": 16.29,
+    "raw_per_s": 1.105,
+    "proj_findings": 541.6,
+    "proj_norm_pts": 48.74,
+    "lats": [
+      12.05,
+      14.89,
+      20.48,
+      13.53
+    ]
+  },
+  "gpt-oss-20b/post_only": {
+    "fire_rate": 1.0,
+    "p75_s": 10.2,
+    "raw_per_s": 1.764,
+    "proj_findings": 864.6,
+    "proj_norm_pts": 77.82,
+    "lats": [
+      11.38,
+      9.81,
+      9.62,
+      8.61
+    ]
+  },
+  "gpt-oss-20b/forge1_nook": {
+    "fire_rate": 1.0,
+    "p75_s": 2.98,
+    "raw_per_s": 6.04,
+    "proj_findings": 2000.0,
+    "proj_norm_pts": 180.0,
+    "lats": [
+      2.97,
+      2.33,
+      2.59,
+      3.02
+    ]
+  },
+  "gpt-oss-20b/inj_com_json": {
+    "fire_rate": 1.0,
+    "p75_s": 8.11,
+    "raw_per_s": 2.221,
+    "proj_findings": 1088.4,
+    "proj_norm_pts": 97.96,
+    "lats": [
+      7.91,
+      7.7,
+      8.7,
+      6.42
+    ]
+  },
+  "gpt-oss-20b/frame_com": {
+    "fire_rate": 0.0,
+    "p75_s": 2.27,
+    "raw_per_s": 0.0,
+    "proj_findings": 0.0,
+    "proj_norm_pts": 0.0,
+    "lats": [
+      2.73,
+      1.25,
+      2.11,
+      1.41
+    ]
+  }
+}

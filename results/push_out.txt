@@ -1,0 +1,43 @@
+--- push attempt via mcp token (len=37) ---
+Authentication required to call the Kaggle API.
+
+First, you will need a Kaggle account. You can sign up at
+  https://www.kaggle.com/account/login
+
+Recommended: log in with OAuth via a web-based authorization flow.
+No token to manage; credentials are cached locally for you.
+    kaggle auth login
+
+If you'd rather not use OAuth, generate an API token at
+  https://www.kaggle.com/settings/api  (click "Generate New Token" under "API")
+and supply it to the CLI in one of these ways:
+
+  Option A: Environment variable
+    export KAGGLE_API_TOKEN=xxxxxxxxxxxxxx  # token copied from the settings UI
+
+  Option B: API token file
+    Save the token to ~/.kaggle/access_token
+Authentication required to call the Kaggle API.
+
+First, you will need a Kaggle account. You can sign up at
+  https://www.kaggle.com/account/login
+
+Recommended: log in with OAuth via a web-based authorization flow.
+No token to manage; credentials are cached locally for you.
+    kaggle auth login
+
+If you'd rather not use OAuth, generate an API token at
+  https://www.kaggle.com/settings/api  (click "Generate New Token" under "API")
+and supply it to the CLI in one of these ways:
+
+  Option A: Environment variable
+    export KAGGLE_API_TOKEN=xxxxxxxxxxxxxx  # token copied from the settings UI
+
+  Option B: API token file
+    Save the token to ~/.kaggle/access_token
+
+--- push attempt via file token (len=37) ---
+The following are not valid tags and could not be added to the kernel: ['agent-security', 'red-team']
+Kernel version 45 successfully pushed.  Please check progress at https://www.kaggle.com/code/danielsolo1770/agent-security-phase0
+
+PUSHED_VERSION: 45

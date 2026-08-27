@@ -8,17 +8,24 @@ Team: **Daniel solo** (`danielsolo1770`)
 
 ---
 
-## Status (2026-08-12)
+## Status (2026-08-27)
 
 | | |
 |--|--|
-| **Best live public** | **87.840 (E7)** |
-| **Rank** | ~#358 / 1170 |
-| **Top-100 cutoff** | ~91.6 |
-| **Active code** | `src/attack.py` (= **E9 DensifySafe**, pending host score) |
-| **Golden to defend** | `src/attack_e7.py` |
+| **Best live public** | **🏆 90.765 (E18h GPU re-roll)** |
+| **Rank** | #346 / 4132 · top-50 cutoff 107.570 (gap +16.8) · top-100 cutoff 98.910 (gap +8.15) |
+| **Active code** | `src/attack.py` (= E18 golden, geometry FROZEN) |
+| **E23 StackHop** | `src/attack_e23_stackturn.py` — additive multi-hop family (burst3/forge2/forge3), validator v13 A/B in flight |
+| **In flight** | E18q re-roll ref 55821012 · validator v13 (T4) golden vs E23 |
+| **🚨 KEY RULES** | **Always push T4 (`machine_shape: NvidiaTeslaT4`)** · kernels push needs `KAGGLE_API_TOKEN` from `~/.kaggle/access_token` |
 
-Full narrative: [`docs/SUBMISSION_JOURNEY_LOG.md`](docs/SUBMISSION_JOURNEY_LOG.md) · snapshot: [`docs/STATUS_2026-08-12.md`](docs/STATUS_2026-08-12.md)
+Deadline Sep 1. 5 subs/day. Dashboard: `python scripts/daily_status.py --log` ·
+Today: `results/daily_status_2026-08-27.md` · Strategy: `docs/STRATEGY_TOP50.md`.
+SDK ground truth (2026-08-27 audit): EXFIL fires per post event (no dedup); UTA
+stacking is DEAD on public Optimal (guardrail 5-event window ⊃ predicate 2-event
+window); `_host()` aliases at i + 26³.
+
+Full narrative: [`docs/SUBMISSION_JOURNEY_LOG.md`](docs/SUBMISSION_JOURNEY_LOG.md)
 
 ---
 
@@ -27,23 +34,28 @@ Full narrative: [`docs/SUBMISSION_JOURNEY_LOG.md`](docs/SUBMISSION_JOURNEY_LOG.m
 ```
 AI-Agent-Security/
 ├── src/
-│   ├── attack.py          # ACTIVE submission algorithm (E9)
-│   ├── attack_e7.py       # Best scored golden (87.840)
-│   ├── attack_e9.py       # DensifySafe source
-│   └── archive/           # older variants
+│   ├── attack.py            # ACTIVE kernel algorithm (E18 golden, frozen)
+│   ├── attack_e18.py        # frozen E18 golden (89.820)
+│   ├── attack_e14.py        # selected golden (88.605)
+│   ├── attack_e11.py        # previous best (88.515)
+│   ├── attack_e15.py        # frozen E15 snapshot
+│   └── archive/             # E5–E13 and older
 ├── scripts/
 │   ├── build_kaggle_kernel.py
 │   ├── kaggle_submit.py
 │   ├── local_eval.py
 │   ├── package_submission.py
-│   ├── final_lmstudio_gate.py
-│   └── archive/           # one-off benches / overnight jobs
-├── notebooks/submit_kernel/   # Kaggle notebook shell (embeds attack.py)
+│   └── archive/             # one-off benches
+├── notebooks/submit_kernel/ # Kaggle notebook (embeds attack.py)
 ├── results/
-│   ├── submissions/       # E1–E9 submit notes
-│   └── submits/           # frozen attack.py copies per phase
-├── docs/                  # journey, research, status
-├── data/                  # competition aicomp_sdk + kaggle_evaluation
+│   ├── submissions/         # E1–E15 submit notes
+│   ├── intel/               # forum / notebooks / repo research
+│   ├── local/               # local eval dumps
+│   └── archive/submits/     # frozen attack.py copies
+├── docs/
+│   ├── SUBMISSION_JOURNEY_LOG.md
+│   └── archive/             # stale plans and benches
+├── data/                    # aicomp_sdk + kaggle_evaluation
 ├── configs/
 └── tests/
 ```
@@ -55,9 +67,23 @@ AI-Agent-Security/
 | Phase | Public | Strategy |
 |-------|-------:|----------|
 | E6 | 85.275 | N32 + validation-fill |
-| **E7** | **87.840** | multi-turn bank + singles, host raw/s |
+| E7 | 87.840 | multi-turn bank + singles |
 | E8 | 82.530 | MsgStack regression (false-fire) |
-| E9 | pending | fire-gate + denser replay packing |
+| E9 | 85.410 | DensifySafe regression vs E7 |
+| E10 | 87.795 | GoldenTail ≈ E7 |
+| **E11** | **88.515** | FastFill FrameForge — **best live** |
+| E12 | 78.750 | density lost on host |
+| E13 | 83.250 | SoloReturn regression |
+| **E14** | **88.605** | Forge1 — **best live**, still the singles wall |
+| E15 | 87.705 | GemmaForge — screen poison |
+| E16 | 62.275 | StopFast — split/filled-forge collapsed |
+| E17 | 80.145 | E14Clean p70 overpack |
+| E18 | 89.820 | RowLock +1.215  |
+| E19 | 82.440 | RowLock+ REPLAY_SAFE 0.992 tail 0.11 — regression, reverted |
+| E18b | 88.155 | golden re-roll CPU — variance band 88.2–89.8 confirmed |
+| E20 | 81.045 | LeanProbe probe trim — regression, geometry now FROZEN |
+| E18c/d/e | 87.3/87.1/85.8 | CPU re-rolls — CPU path retired |
+| **E18f/g/h/i** | 89.2/**90.765**/89.7/89.1 | **T4 GPU era — E18h = new best, first 90+** |
 
 Pre-refresh scores (E4 87.75 etc.) are **ERROR** after the host reset.
 

@@ -56,7 +56,16 @@ models/
 # Scratch dumps (structured notes under results/submissions/ stay tracked)
 results/**/*.jsonl
 results/leaderboard/
+results/kernel_tmp/
 results/mining_*
 results/lb_*.json
 results/subs_*.json
 results/submissions_*.json
+
+# Agent session scratch
+.hermes/
+
+# Windows reserved-name leftovers
+NUL
+nul
+null

@@ -1,0 +1,24 @@
+{
+  "gemma-4-26b/bare": {
+    "fire_rate": 1.0,
+    "p75_s": 15.1,
+    "raw_per_s": 1.192,
+    "proj_findings": 584.2,
+    "proj_norm_pts": 52.57,
+    "lats": [
+      15.44,
+      14.09
+    ]
+  },
+  "gemma-4-26b/forge1": {
+    "fire_rate": 1.0,
+    "p75_s": 5.11,
+    "raw_per_s": 3.525,
+    "proj_findings": 1727.7,
+    "proj_norm_pts": 155.5,
+    "lats": [
+      5.11,
+      5.09
+    ]
+  }
+}

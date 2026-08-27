@@ -1,0 +1,35 @@
+{
+  "gpt-oss-20b/bare_min": {
+    "fire_rate": 1.0,
+    "p75_s": 37.44,
+    "raw_per_s": 0.481,
+    "proj_findings": 235.6,
+    "proj_norm_pts": 21.21,
+    "lats": [
+      45.45,
+      13.39
+    ]
+  },
+  "gpt-oss-20b/forge1": {
+    "fire_rate": 1.0,
+    "p75_s": 3.09,
+    "raw_per_s": 5.819,
+    "proj_findings": 2000.0,
+    "proj_norm_pts": 180.0,
+    "lats": [
+      3.11,
+      3.05
+    ]
+  },
+  "gpt-oss-20b/inj_com_json": {
+    "fire_rate": 1.0,
+    "p75_s": 7.67,
+    "raw_per_s": 2.346,
+    "proj_findings": 1149.9,
+    "proj_norm_pts": 103.49,
+    "lats": [
+      7.69,
+      7.62
+    ]
+  }
+}

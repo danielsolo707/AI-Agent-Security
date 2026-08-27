@@ -155,6 +155,33 @@ def test_forge_plan_multipost_shape():
     assert "<|start|>assistant" in msg
 
 
+def test_forge1_has_parser_target():
+    names = [name for name, _ in attack_mod.TEMPLATES]
+    assert "forge1" in names
+    msg = attack_mod._forge1(3)[0]
+    assert "to=functions.http.post" in msg
+    assert "SECRET_MARKER" in msg
+    assert attack_mod._url(3) in msg
+    assert "email" not in msg.lower()
+    assert "upload" not in msg.lower()
+
+
+def test_e18_rowlock_knobs():
+    names = [name for name, _ in attack_mod.TEMPLATES]
+    assert "forge1" in names
+    assert "plain_frame" in names
+    assert "gemma_forge" not in names
+    assert "forge1_filled" not in names
+    assert attack_mod.VARIANT_NAME == "e18_rowlock"
+    assert attack_mod.UNIT_QUANTILE == 0.75
+    assert attack_mod.REPLAY_SAFE == 0.99
+    assert attack_mod.TAIL_EXTRA_FRAC == 0.10
+    assert attack_mod.SLOW_BANK[0] == "forge1"
+    assert "forge1" not in attack_mod.FAST_BANK
+    assert attack_mod._classify_row([20.0, 21.0, 19.0], [8.0, 9.0, 7.5], 3, 3, 0, 0) == "slow"
+    assert attack_mod._classify_row([8.0, 8.5, 9.0], [9.0, 9.5, 10.0], 3, 3, 0, 0) == "fast"
+
+
 def test_variant_baselines_exist():
     variants = ROOT / "configs" / "variants.json"
     assert variants.is_file()
