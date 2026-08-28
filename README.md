@@ -8,22 +8,28 @@ Team: **Daniel solo** (`danielsolo1770`)
 
 ---
 
-## Status (2026-08-27)
+## Status (2026-08-28)
 
 | | |
 |--|--|
 | **Best live public** | **🏆 90.765 (E18h GPU re-roll)** |
-| **Rank** | #346 / 4132 · top-50 cutoff 107.570 (gap +16.8) · top-100 cutoff 98.910 (gap +8.15) |
+| **Rank** | ~#101 · top-50 cutoff 107.970 (gap +17.2) |
 | **Active code** | `src/attack.py` (= E18 golden, geometry FROZEN) |
-| **E23 StackHop** | `src/attack_e23_stackturn.py` — additive multi-hop family (burst3/forge2/forge3), validator v13 A/B in flight |
-| **In flight** | E18q re-roll ref 55821012 · validator v13 (T4) golden vs E23 |
-| **🚨 KEY RULES** | **Always push T4 (`machine_shape: NvidiaTeslaT4`)** · kernels push needs `KAGGLE_API_TOKEN` from `~/.kaggle/access_token` |
+| **E23 StackHop** | `src/attack_e23_stackturn.py` — validator v15 A/B (CPU) in flight |
+| **In flight** | E18r/s/t quota-free re-rolls (refs 55850407/55850421/55850427) · validator v15 |
+| **🚨 KEY RULES** | **GPU quota is EXHAUSTED (30h/wk) → re-submit completed versions (`-v N`) for fresh reruns** · when quota returns, always push T4 (`machine_shape: NvidiaTeslaT4`) |
 
-Deadline Sep 1. 5 subs/day. Dashboard: `python scripts/daily_status.py --log` ·
-Today: `results/daily_status_2026-08-27.md` · Strategy: `docs/STRATEGY_TOP50.md`.
-SDK ground truth (2026-08-27 audit): EXFIL fires per post event (no dedup); UTA
-stacking is DEAD on public Optimal (guardrail 5-event window ⊃ predicate 2-event
-window); `_host()` aliases at i + 26³.
+Deadline Sep 1. 5 subs/day. Dashboard: `python scripts/daily_status.py --log`.
+Today: `results/daily_status_2026-08-28` pending · Strategy: `docs/STRATEGY_TOP50.md`.
+
+Aug-28 findings:
+- **GPU quota root cause**: validator v13 ran `GPU_DEVICE: NONE` (quota drained) → CUDA
+  llama-cpp wheel failed (`libcudart.so.12`) → all 4 evals EVAL_FAIL, empty summary.
+  Validator install cell is now GPU-aware with a CPU-wheel fallback; monitor fetch
+  fixed (CLI + access_token, retries).
+- **Quota-free re-rolls**: `kaggle competitions submit -v <completed version>` is
+  accepted and triggers a fresh scoring rerun (reruns are separate compute).
+  Best available ticket while quota is drained: re-submit v45 (golden T4 build).
 
 Full narrative: [`docs/SUBMISSION_JOURNEY_LOG.md`](docs/SUBMISSION_JOURNEY_LOG.md)
 

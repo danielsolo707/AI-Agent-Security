@@ -25,13 +25,38 @@ os.environ['GPT_OSS_MODEL_PATH'] = gpt_paths[0]
 os.environ['GEMMA_MODEL_PATH'] = gemma_paths[0] if GEMMA_OK else ''
 os.environ['PYTHONUTF8'] = '1'
 
+def _pip_llama(force_reinstall: bool, cuda: bool) -> None:
+    cmd = [sys.executable, '-m', 'pip', 'install', '-q', '--no-cache-dir', 'llama-cpp-python']
+    if force_reinstall:
+        cmd.append('--force-reinstall')
+    if cuda:
+        cmd += ['--extra-index-url', 'https://abetlen.github.io/llama-cpp-python/whl/cu124']
+    subprocess.run(cmd, check=True)
+
+
+_cuda_ok = False
+try:
+    import torch
+    _cuda_ok = torch.cuda.is_available()
+except Exception as _e:
+    print('torch probe err:', repr(_e))
+print('cuda available:', _cuda_ok)
+
 if importlib.util.find_spec('llama_cpp') is None:
-    subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '--no-cache-dir',
-        'llama-cpp-python',
-        '--extra-index-url', 'https://abetlen.github.io/llama-cpp-python/whl/cu124'], check=True)
+    _pip_llama(force_reinstall=False, cuda=_cuda_ok)
+
+# Sanity: the CUDA wheel cannot load without libcudart; fall back to the CPU
+# wheel so a GPU-less worker never produces an empty validation run.
+try:
+    import llama_cpp  # noqa: F401
+except Exception as _e:
+    print('llama_cpp import failed:', repr(_e))
+    print('falling back to CPU llama-cpp wheel')
+    _pip_llama(force_reinstall=True, cuda=False)
+    import llama_cpp  # noqa: F401
 
 GOLDEN_GZ64 = (
-    "H4sIAPNVkGoC/9087XLbOJL/+RQ4VrmGdGhacuzEo4tSq3GUGe84ts92dnfKpWLREiQxpkgNScV2Jbm6X/cAV/eE+yTXDYAg"
+    "H4sIABNhkWoC/9087XLbOJL/+RQ4VrmGdGhacuzEo4tSq3GUGe84ts92dnfKpWLREiQxpkgNScV2Jbm6X/cAV/eE+yTXDYAg"
     "AEKW49mtrTr/SEQA3Wj0F7obIF3XHRyTwYxmFbmk41WRVA/k7//1v+R8HpeUDLuHxL3I707y8a0bOs6wu0/65PAwfNU5ICVN"
     "6biik5CcxBUtyISmVVySaZykdNJzCEAfkBldLOJomhczSpKMVHNKZml+E6ekHBeUZj1y+Dp83Tlgw1+R7l5JFjTOdlJAmY0f"
     "SLlMk4q8IAxDN5omKSInr/bCvdcHxJvQeEKK/M5n8K/J8nWHLOPxLUBMaFbiasqqSJZLBDrshN19AMo/0wIH+Y7zYyfskIzS"
@@ -117,7 +142,7 @@ GOLDEN_GZ64 = (
     "4Qs7/wecpccfalUAAA=="
 )
 CAND_GZ64 = (
-    "H4sIAPNVkGoC/9087XLbOJL/+RQ4XrmWdChasuxMorVSq7GVGVcc22fLs5tz6Vi0BEmMKVJDUnG8SaruIe4J70muGwBBAKRs"
+    "H4sIABNhkWoC/9087XLbOJL/+RQ4XrmWdChasuxMorVSq7GVGVcc22fLs5tz6Vi0BEmMKVJDUnG8SaruIe4J70muGwBBAKRs"
     "x5mprTpXTUYi0I1Gf6E/INq2PTgmgzlNCnJJJ+ssKu7J//73/5DzRZhTMtztEvuyCCe3v6Yr27esYecVuUjvTtLJLZmn8ZQm"
     "xHn12n+12yY7JKOtLI1jchMmU/Lqpf+69brtv/LIDc0LAh9/ernvkignby/O/nN4as1puqRFdu+zZeD5+dXF8ORDa3B0dDw6"
     "/m3YI1FBwuk0JyFZruMiai3SFRn+4+3xCZmFyyi+J0VKigW1YMFbmAWrxrTI8RFZZeknIC4L73Zykk8yCl9eEKAXdjUPC0qm"
@@ -289,8 +314,8 @@ def run_eval(model_name, attack_path, budget_s):
     return summary
 
 
-BUDGET_S = int(os.environ.get('LOCAL_BUDGET_S', '1800'))
-REPLAY_FRACTION = float(os.environ.get('LOCAL_REPLAY_FRACTION', '0.55'))
+BUDGET_S = int(os.environ.get('LOCAL_BUDGET_S', '8750'))
+REPLAY_FRACTION = float(os.environ.get('LOCAL_REPLAY_FRACTION', '0.99'))
 os.environ.setdefault('LOCAL_REPLAY_BUDGET_S', str(BUDGET_S * REPLAY_FRACTION))
 MODELS = ['gpt_oss'] + (['gemma'] if GEMMA_OK else [])
 results = []

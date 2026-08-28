@@ -113,40 +113,49 @@ def check_validator(st: dict) -> bool:
     return False
 
 
-def fetch_validator_results() -> None:
+def fetch_validator_results() -> bool:
     dest = ROOT / "results" / "local_validation"
     dest.mkdir(parents=True, exist_ok=True)
-    env_backup = dict(os.environ)
-    os.environ["PYTHONUTF8"] = "1"
+    env = dict(os.environ)
+    env["PYTHONUTF8"] = "1"
+    tok_file = Path.home() / ".kaggle" / "access_token"
+    if tok_file.exists():
+        env["KAGGLE_API_TOKEN"] = tok_file.read_text(encoding="utf-8").strip()
     try:
-        from kaggle.api.kaggle_api_extended import KaggleApi
-
-        api = KaggleApi()
-        api.authenticate()
-        api.kernels_output(VALIDATOR, path=str(dest), force=True)
+        p = subprocess.run(
+            ["kaggle", "kernels", "output", VALIDATOR, "-p", str(dest), "-o"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            env=env,
+            timeout=600,
+        )
     except Exception as exc:
         log(f"kernels_output failed: {exc}")
-        return
-    finally:
-        os.environ.clear()
-        os.environ.update(env_backup)
+        return False
+    out = ((p.stdout or "") + (p.stderr or "")).strip()
+    if out:
+        log("kernels_output: " + out.splitlines()[-1])
     summary = dest / "validation_summary.json"
-    if summary.exists():
-        data = json.loads(summary.read_text(encoding="utf-8"))
-        log("=== VALIDATION RESULTS ===")
-        for r in data:
-            log(json.dumps(r))
+    if not summary.exists():
+        log("no validation_summary.json in output")
+        return False
+    data = json.loads(summary.read_text(encoding="utf-8"))
+    log("=== VALIDATION RESULTS ===")
+    for r in data:
+        log(json.dumps(r))
     nb = next(dest.glob("local_validation.ipynb"), None)
-    if nb is None:
-        return
-    text = nb.read_text(encoding="utf-8")
-    marker = "=== COMPARISON ==="
-    if marker in text:
-        tail = text.split(marker, 1)[1][:2000]
-        log("comparison block found in notebook output:")
-        for line in tail.split("\\n")[:12]:
-            if line.strip():
-                log(line.strip()[:160])
+    if nb is not None:
+        text = nb.read_text(encoding="utf-8")
+        marker = "=== COMPARISON ==="
+        if marker in text:
+            tail = text.split(marker, 1)[1][:2000]
+            log("comparison block found in notebook output:")
+            for line in tail.split("\\n")[:12]:
+                if line.strip():
+                    log(line.strip()[:160])
+    return True
 
 
 def main() -> None:
@@ -162,8 +171,15 @@ def main() -> None:
         done = check_validator(st)
         if done and not st.get("results_fetched"):
             time.sleep(30)
-            fetch_validator_results()
-            st["results_fetched"] = True
+            if fetch_validator_results():
+                st["results_fetched"] = True
+            else:
+                time.sleep(60)
+                if fetch_validator_results():
+                    st["results_fetched"] = True
+                else:
+                    log("fetch failed — will retry next cycle")
+                    st["validator_done"] = False
         check_submissions(st)
         save_state(st)
         if st.get("validator_done") and args.minutes <= 0:
