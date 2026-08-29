@@ -314,7 +314,18 @@ def run_eval(model_name, attack_path, budget_s):
     return summary
 
 
-BUDGET_S = int(os.environ.get('LOCAL_BUDGET_S', '8750'))
+if '_cuda_ok' in dir() and _cuda_ok:
+    # T4 worker: proven config (v8, Aug-25) — full A/B at LB-like budget.
+    BUDGET_S = int(os.environ.get('LOCAL_BUDGET_S', '8750'))
+    MODELS = ['gpt_oss'] + (['gemma'] if GEMMA_OK else [])
+else:
+    # CPU worker: the golden engine packs its plan for the host 9000 s budget,
+    # so replay needs >8662 s (0.99x8750) and timed out on CPU (v15 lesson).
+    # Over-provision the budget as pure replay headroom and run gpt_oss only
+    # so two evals fit inside the 12 h kernel limit.
+    BUDGET_S = int(os.environ.get('LOCAL_BUDGET_S', '10800'))
+    MODELS = ['gpt_oss']
+    print('CPU worker mode: BUDGET_S=%d, gpt_oss only' % BUDGET_S)
 REPLAY_FRACTION = float(os.environ.get('LOCAL_REPLAY_FRACTION', '0.99'))
 os.environ.setdefault('LOCAL_REPLAY_BUDGET_S', str(BUDGET_S * REPLAY_FRACTION))
 MODELS = ['gpt_oss'] + (['gemma'] if GEMMA_OK else [])

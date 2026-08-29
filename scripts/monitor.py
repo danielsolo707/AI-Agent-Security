@@ -40,6 +40,17 @@ def save_state(st: dict) -> None:
     STATE.write_text(json.dumps(st), encoding="utf-8")
 
 
+def kaggle_env() -> dict:
+    env = dict(os.environ)
+    env["PYTHONUTF8"] = "1"
+    tok_file = Path.home() / ".kaggle" / "access_token"
+    if tok_file.exists():
+        t = tok_file.read_text(encoding="utf-8").strip()
+        if t:
+            env["KAGGLE_API_TOKEN"] = t
+    return env
+
+
 def get_submissions() -> list[dict]:
     import csv as _csv
 
@@ -49,6 +60,7 @@ def get_submissions() -> list[dict]:
         text=True,
         encoding="utf-8",
         timeout=120,
+        env=kaggle_env(),
     )
     rows = []
     for item in _csv.DictReader(io.StringIO(out.stdout)):
@@ -100,16 +112,16 @@ def check_validator(st: dict) -> bool:
         capture_output=True,
         text=True,
         timeout=120,
+        env=kaggle_env(),
     ).stdout
     log("validator: " + out.strip().splitlines()[-1] if out.strip() else "no status")
     if "COMPLETE" in out:
         st["validator_done"] = True
         return True
     if "ERROR" in out or "CANCEL" in out:
-        st["validator_done"] = True
-        st["validator_error"] = True
-        log("VALIDATOR FAILED")
-        return True
+        # run ended badly (e.g. quota-cancel); keep watching for the next push
+        log("validator run ended badly — waiting for next version push")
+        return False
     return False
 
 

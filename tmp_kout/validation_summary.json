@@ -1,0 +1,12 @@
+[
+  {
+    "config": "attack_candidate",
+    "model": "gpt_oss",
+    "score": 180.0,
+    "score_raw": 36000.0,
+    "findings": 2000,
+    "unique_cells": 2000,
+    "eval_time_s": 3053.7,
+    "wall_s": 3053.8
+  }
+]
