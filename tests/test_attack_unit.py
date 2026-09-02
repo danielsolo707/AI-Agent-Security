@@ -1,4 +1,4 @@
-"""Unit regressions for Phase-1 attack (no real LLM required)."""
+"""Unit regressions for E18 RowLock (no real LLM required)."""
 
 from __future__ import annotations
 
@@ -61,7 +61,7 @@ class AlwaysPost:
             call=ToolCall(
                 call_id=f"c{self.n}",
                 tool_name="http.post",
-                arguments={"url": url, "data": attack_mod.PAYLOAD},
+                arguments={"url": url, "data": attack_mod.MARKER},
             )
         )
 
@@ -73,6 +73,7 @@ def test_unique_hosts():
 
 
 def test_secret_marker_payload():
+    assert attack_mod.MARKER == "SECRET_MARKER"
     assert attack_mod.PAYLOAD == "SECRET_MARKER"
 
 
@@ -180,20 +181,6 @@ def test_e18_rowlock_knobs():
     assert "forge1" not in attack_mod.FAST_BANK
     assert attack_mod._classify_row([20.0, 21.0, 19.0], [8.0, 9.0, 7.5], 3, 3, 0, 0) == "slow"
     assert attack_mod._classify_row([8.0, 8.5, 9.0], [9.0, 9.5, 10.0], 3, 3, 0, 0) == "fast"
-
-
-def test_variant_baselines_exist():
-    variants = ROOT / "configs" / "variants.json"
-    assert variants.is_file()
-    data = json_load(variants)
-    assert "baseline" in data["variants"]
-    assert "multipost4" in data["variants"]
-
-
-def json_load(path: Path):
-    import json
-
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def test_scoring_math_per_candidate():

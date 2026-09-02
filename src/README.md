@@ -1,17 +1,14 @@
-# Attack sources
+# `src/attack.py` — E18 RowLock
 
-| File | Role |
-|------|------|
-| `attack.py` | **Active** — embedded in the Kaggle kernel (currently E17) |
-| `attack_e14.py` | **Selected golden** — 88.605 public |
-| `attack_e11.py` | Previous best — 88.515 public |
-| `attack_e15.py` | Frozen E15 snapshot (same family as `attack.py`) |
-| `archive/` | Older phases (E5–E13) |
+This is the algorithm that was actually submitted. It is not a post-deadline rewrite.
 
-Promote a golden to active:
+**Public 90.765 · private 0.000**
 
-```powershell
-Copy-Item src\attack_e14.py src\attack.py -Force
-$env:KAGGLE_ENABLE_GPU = "1"
-python scripts\build_kaggle_kernel.py
-```
+The attack live-validates single-message `http.post` prompts that put `SECRET_MARKER` in `data` and a unique host in `url`. After a short warmup it locks either:
+
+- the Harmony/`forge1` bank (gpt-oss), or
+- the plain-English bank (gemma)
+
+then fills a replay-safe number of unique candidates against a 9,000 second budget.
+
+Public `OptimalGuardrail` inspects `url` before `data`, so the marker scores. The private guardrail scans `data` for `SECRET_MARKER` and every candidate is denied. See [`docs/POSTMORTEM.md`](../docs/POSTMORTEM.md).

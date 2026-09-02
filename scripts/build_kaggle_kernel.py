@@ -46,7 +46,8 @@ assert 'class AttackAlgorithm' in src
 print('AttackAlgorithm present: OK')
 """
 
-    serve_cell = """from pathlib import Path
+    serve_cell = """import os
+from pathlib import Path
 
 placeholder = (
     'Id,Score\\n'
@@ -58,9 +59,16 @@ placeholder = (
 (Path('/kaggle/working') / 'submission.csv').write_text(placeholder)
 print('submission.csv placeholder written')
 
-from kaggle_evaluation.jed_attack_134815.jed_attack_inference_server import JEDAttackInferenceServer
-print('Starting JEDAttackInferenceServer...')
-JEDAttackInferenceServer().serve()
+# Host scoring sets KAGGLE_IS_COMPETITION_RERUN=1 and drives the gateway.
+# A normal Save & Run All must not hang on serve().
+if os.getenv('KAGGLE_IS_COMPETITION_RERUN'):
+    from kaggle_evaluation.jed_attack_134815.jed_attack_inference_server import (
+        JEDAttackInferenceServer,
+    )
+    print('Starting JEDAttackInferenceServer...')
+    JEDAttackInferenceServer().serve()
+else:
+    print('Commit run: skip inference server (not a competition rerun).')
 """
 
     nb = {
@@ -79,10 +87,10 @@ JEDAttackInferenceServer().serve()
                 "cell_type": "markdown",
                 "metadata": {},
                 "source": [
-                    "# AI Agent Security — DanielEmpire Phase-0 Attack\n",
+                    "# AI Agent Security — E18 RowLock\n",
                     "\n",
-                    "Portfolio + Go-Explore multi-step tool attack.\n",
-                    "Writes `attack.py` then serves the JED inference endpoint.\n",
+                    "Embeds the submitted `src/attack.py` and, on a competition rerun, serves the JED endpoint.\n",
+                    "A normal commit run only writes `attack.py` and a placeholder `submission.csv`.\n",
                 ],
             },
             {

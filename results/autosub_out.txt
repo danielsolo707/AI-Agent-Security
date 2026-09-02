@@ -1,9 +1,0 @@
-[08-27 15:00:19Z] auto_submit start: kernel=danielsolo1770/agent-security-phase0 v45 msg='E18q'
-[08-27 15:00:20Z] kernel COMPLETE — submitting
-[08-27 15:01:24Z] submit attempt 0 rc=0: 4 submissions remaining today.
-[08-27 15:01:45Z] submit attempt 1 rc=1: No competition specified
-[08-27 15:02:06Z] submit attempt 2 rc=2: usage: kaggle competitions submit [-h] [-f FILE_NAME] [-k KERNEL] -m MESSAGE
-                                  [-v VERSION] [-q] [--sandbox]
-                                  [competition]
-kaggle competitions submit: error: the following arguments are required: -m/--message
-[08-27 15:02:26Z] SUBMIT_FAILED

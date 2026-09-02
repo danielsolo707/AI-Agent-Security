@@ -53,17 +53,18 @@ strix_runs/
 .lmstudio/
 models/
 
-# Scratch dumps (structured notes under results/submissions/ stay tracked)
-results/**/*.jsonl
-results/leaderboard/
-results/kernel_tmp/
-results/mining_*
-results/lb_*.json
-results/subs_*.json
-results/submissions_*.json
+# Scratch dumps / local runs (not part of the public archive)
+results/
+tmp/
+tmp_*/
+tmp_kout/
+*.bak
+notebooks/**/*.bak
 
 # Agent session scratch
 .hermes/
+.workbuddy-ai/
+.grok/
 
 # Windows reserved-name leftovers
 NUL

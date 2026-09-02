@@ -1,19 +1,13 @@
-"""AI Agent Security — Phase E18 "RowLock".
+"""E18 RowLock — submitted attack for AI Agent Security (Kaggle, 2026).
 
-E14 = 88.605 selected. Later deltas failed:
-  E15 gemma_forge in the global screen: 87.705
-  E16 12s mean-latency split + forge1_filled: 62.275 (dead row)
-  E17 p70 pack + density stripped: 80.145 (overpack)
+Public 90.765 / private 0.000.
 
-90.0 needs ~1000 singles x 18 raw. Public mean is gated by the slower row.
-E14's shared bank lets Harmony templates win on gemma (English prefix still
-fires) and slow that row. E16's 12s MEAN split flips gemma on a single
-slow probe.
+Live-validates single-message http.post prompts that put SECRET_MARKER in
+data and a unique host in url. After warmup, lock the Harmony (forge1) bank
+on gpt-oss or the plain bank on gemma. Size the pack with p75 latency against
+a 9000s replay budget.
 
-E18 = E14 engine (p75, REPLAY_SAFE 0.99, dense gate, forge1) plus one lock:
-after warmup, 3x plain vs 3x forge1. If forge1 is clearly faster, lock the
-Harmony bank (gpt-oss). If forge1 is useless/slower, lock the plain bank
-(gemma). Ambiguous → E14 full bank. No latency threshold. No filled JSON.
+This file is the competition submission. It is not a post-deadline rewrite.
 """
 from __future__ import annotations
 
